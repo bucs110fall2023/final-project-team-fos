@@ -1,18 +1,22 @@
 [![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-718a45dd9cf7e7f842a935f5ebbe5719a5e09af4491e668f4dbf3b35d5cca122.svg)](https://classroom.github.com/online_ide?assignment_repo_id=12803313&assignment_repo_type=AssignmentRepo)
 :warning: Everything between << >> needs to be replaced (remove << >> after replacing)
 
-# << Project Title >>
-## CS110 Final Project  << Semester, Year >>
+# << SPACE WAR >>
+## CS110 Final Project  << Fall, 2023 >>
 
 ## Team Members
 
-<< List team member names >>
+<< Jae Woo Song, Sacchit Agavane >>
 
 ***
 
 ## Project Description
 
-<< Give an overview of your project >>
+<< A game which the spaceship has to survive as long as it can.
+The spaceship is manipulated by the player's mouse or keyboard.
+There is going to be laser beams shot from other ships to destroy the player's spaceship.
+
+The idea is that we are trying to make a spaceship which can only moves left and right. the enemy spaceships will pop up randomly and the user have to hit the enemy within a certain time limit. At the end the score will be displayed. >>
 
 ***    
 
