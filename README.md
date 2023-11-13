@@ -34,11 +34,12 @@ The idea is that we are trying to make a spaceship which can only moves left and
 
 ### Features
 
-1. << Feature 1 >>
-2. << Feature 2 >>
-3. << Feature 3 >>
-4. << Feature 4 >>
-5. << Feature 5 >>
+1. start game
+2. quit game
+3. move with keyboard
+4. destroyed when hit
+5. counts time
+6. shoots laser when key is pressed
 
 ### Classes
 
