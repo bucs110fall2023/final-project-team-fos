@@ -1,64 +1,76 @@
 import pygame
+import random
+from src.player import Player
+from src.enemy import Enemy
+#import your controller
 
-pygame.init()
-screen = pygame.display.set_mode((600,600))
+def main():
+    
+    pygame.init()
+    screen = pygame.display.set_mode((600,600))
+    player = Player()
+    enemy = Enemy()
+    clock = pygame.time.Clock()
+    enemies = pygame.sprite.Group()
+    number_of_times_2 = []
+    number_of_times_3 = []
+    current_time =0
+    for n in range(2):
+        enemies.add(Enemy(random.randint(0,575),-50))
+    
+    while True:
+        
+        current_time = pygame.time.get_ticks()
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    player.rect.x -= player.speed
+                if event.key == pygame.K_RIGHT:
+                    player.rect.x += player.speed
 
-a = 275
-x = 275
+        for enemy in enemies:
+            enemy.rect.y = enemy.rect.y + 10
+        
+        screen.fill((0,0,0))  # Fill the screen with a black color
 
-hitboxes = {
-    "white" : pygame.Rect(x,500,50,50),
-    "red" : pygame.Rect(a,0,50,50)
-}
+        screen.blit(player.surface_obj, player.rect)
+        
+        for enemy in enemies:
+            screen.blit(enemy.surface_obj, enemy.rect) 
+        
+        for enemy in enemies:
+            if enemy.rect.y == 500:
+                for n in range(1):
+                    enemies.add(Enemy(random.randint(0,575),0))
+            if enemy.rect.y == 650:
+                enemy.kill() 
+                
+        if 10000 < current_time <= 20000 and number_of_times_2==[] :
+            for n in range(2):
+                enemies.add(Enemy(random.randint(0,575),-50))
+            number_of_times_2.append(1)
+        
+        if  20000 < current_time <= 30000 and number_of_times_3==[] :
+            for n in range(2):
+                enemies.add(Enemy(random.randint(0,575),-50))
+            number_of_times_3.append(1)
+                
+        pygame.display.flip()
+        clock.tick(30)  # Set the frame rate to 30 frames per second
+    
+    #Create an instance on your controller object
+    #Call your mainloop
+    
+    ###### NOTHING ELSE SHOULD GO IN main(), JUST THE ABOVE 3 LINES OF CODE ######
 
-main_colors = {
-    "white" : ("white"),
-    "red": ("red")
-}
+# https://codefather.tech/blog/if-name-main-python/
+# if __name__ == '__main__':
+#     main()
 
-
-running = True
-
-
-while running:
-    for event in pygame.event.get():
-       
-        if event.type == pygame.QUIT:
-            running = False
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
-                for color in hitboxes:
-                    pygame.draw.rect(screen, main_colors[color], hitboxes[color])
-                    pygame.display.flip()
-            if event.key == pygame.K_LEFT:
-                screen.fill("black")
-                x = x-20
-                hitboxes["white"]= pygame.Rect(x,500,50,50)
-                pygame.draw.rect(screen, main_colors["white"], hitboxes["white"])
-                pygame.draw.rect(screen, main_colors["red"], hitboxes["red"])
-                pygame.display.flip()
-            if event.key == pygame.K_RIGHT:
-                screen.fill("black")
-                x = x+20
-                hitboxes["white"]= pygame.Rect(x,500,50,50)
-                pygame.draw.rect(screen, main_colors["white"], hitboxes["white"])
-                pygame.draw.rect(screen, main_colors["red"], hitboxes["red"])
-                pygame.display.flip()
-            if event.key == pygame.K_s:
-                for n in range(11):
-                    y = 450-50*n
-                    screen.fill("black")
-                    pygame.draw.rect(screen, main_colors["white"], hitboxes["white"])
-                    pygame.draw.rect(screen, main_colors["red"], hitboxes["red"])
-                    pygame.draw.rect(screen , "green", (x+20, y, 10, 50))
-                    pygame.display.flip()
-                    pygame.time.delay(70)
-                    if a <= x+20 <= a+50 and y == 50:
-                        screen.fill("black")
-                        main_colors["red"]="black"
-                        pygame.draw.rect(screen, main_colors["white"], hitboxes["white"])
-                        pygame.draw.rect(screen, main_colors["red"], hitboxes["red"])
-                        pygame.display.flip()
+main()
                         
                 
                 
