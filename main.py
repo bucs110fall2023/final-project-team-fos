@@ -3,8 +3,7 @@ from src.sample_controller import Controller
 
 def main():
     controller = Controller()
-    controller.gameloop()
-    
+    controller.mainloop() 
     
     #Create an instance on your controller object
     #Call your mainloop

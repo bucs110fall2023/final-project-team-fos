@@ -13,32 +13,46 @@ class Controller:
     self.enemy = Enemy()
     self.clock = pygame.time.Clock()
     self.enemies = pygame.sprite.Group()
+    self.font = pygame.font.Font(None, 48)
+    self.text = self.font.render("press SPACE to start!", True, "white")
     self.number_of_times_2 = []
     self.number_of_times_3 = []
     self.current_time =0
     for n in range(2):
         self.enemies.add(Enemy(random.randint(0,575),-50))
+    self.STATE = "MENU"
+    
+    
     
   def mainloop(self):
+  
     while True:
       if self.STATE == "MENU":
         self.menuloop()
       elif self.STATE == "GAME":
         self.gameloop()
-      elif self.STATE == "GAMEOVER":
-        self.gameoverloop()
+      # elif self.STATE == "GAMEOVER":
+      #   self.gameoverloop()
     #select state loop
     
   
   ### below are some sample loop states ###
   
 
-  # def menuloop(self):
-  #   while self.STATE == "MENU":
-  #     for event in pygame.evnt.get():
-  #       if event.type == pygame.KEYDOWN:
-  #         if event.key == pygame.K_SPACE:
-  #           self.STATE == "GAME"
+  def menuloop(self):
+    
+    while self.STATE == "MENU":
+      
+      for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+          pygame.quit()
+        if event.type == pygame.KEYDOWN:
+          if event.key == pygame.K_SPACE:
+            self.STATE = "GAME"
+      
+      self.screen.fill((0,0,0))
+      self.screen.blit(self.text, (140,150))
+      pygame.display.flip()
     
       #event loop
 
@@ -48,7 +62,7 @@ class Controller:
       
   def gameloop(self):
     
-    while True:
+    while self.STATE == "GAME":
         
         current_time = pygame.time.get_ticks()
         
