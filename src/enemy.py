@@ -12,17 +12,17 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
 
-def main():
-    pygame.init()
-    screen = pygame.display.set_mode((600, 600))
-    clock = pygame.time.Clock()  # Add a clock to control the frame rate
-    enemy = Enemy()
-    enemies = pygame.sprite.Group()
-    number_of_times_2 = []
-    number_of_times_3 = []
-    current_time =0
-    for n in range(2):
-        enemies.add(Enemy(random.randint(0,575),-50))
+# def main():
+#     pygame.init()
+#     screen = pygame.display.set_mode((600, 600))
+#     clock = pygame.time.Clock()  # Add a clock to control the frame rate
+#     enemy = Enemy()
+#     enemies = pygame.sprite.Group()
+#     number_of_times_2 = []
+#     number_of_times_3 = []
+#     current_time =0
+#     for n in range(2):
+#         enemies.add(Enemy(random.randint(0,575),-50))
 
     
 #     while True:

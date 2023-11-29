@@ -21,7 +21,7 @@ def main():
     while True:
         
         current_time = pygame.time.get_ticks()
-        
+        #change
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -39,7 +39,7 @@ def main():
         screen.blit(player.surface_obj, player.rect)
         
         for enemy in enemies:
-            screen.blit(enemy.surface_obj, enemy.rect)  # Draw the player on the screen
+            screen.blit(enemy.surface_obj, enemy.rect) 
         
         for enemy in enemies:
             if enemy.rect.y == 500:
