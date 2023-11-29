@@ -1,29 +1,32 @@
 import pygame
-from player import Player
-from enemy import Enemy
+import random
+from src.player import Player
+from src.enemy import Enemy
 
 class Controller:
   
   def __init__(self):
     #setup pygame data
     pygame.init()
-    screen = pygame.display.set_mode((600,600))
-    player = Player()
-    enemy = Enemy()
-    clock = pygame.time.Clock()
-    enemies = pygame.sprite.Group()
-    number_of_times_2 = []
-    number_of_times_3 = []
-    current_time =0
+    self.screen = pygame.display.set_mode((600,600))
+    self.player = Player()
+    self.enemy = Enemy()
+    self.clock = pygame.time.Clock()
+    self.enemies = pygame.sprite.Group()
+    self.number_of_times_2 = []
+    self.number_of_times_3 = []
+    self.current_time =0
+    for n in range(2):
+        self.enemies.add(Enemy(random.randint(0,575),-50))
     
   def mainloop(self):
-    # while True:
-    #   if self.STATE == "MENU":
-    #     self.menuloop()
-    #   elif self.STATE == "GAME":
-    #     self.gameloop()
-    #   elif self.STATE == "GAMEOVER":
-    #     self.gameoverloop()
+    while True:
+      if self.STATE == "MENU":
+        self.menuloop()
+      elif self.STATE == "GAME":
+        self.gameloop()
+      elif self.STATE == "GAMEOVER":
+        self.gameoverloop()
     #select state loop
     
   
@@ -43,26 +46,56 @@ class Controller:
 
       #redraw
       
-  # def gameloop(self):
-  #   player = Player()
-  #   while True:
-  #       for event in pygame.event.get():
-  #           if event.type == pygame.QUIT:
-  #               pygame.quit()
-  #           if event.type == pygame.KEYDOWN:
-  #               if event.key == pygame.K_LEFT:
-  #                   player.rect.x -= player.speed
-                
-  #               if event.key == pygame.K_RIGHT:
-  #                   player.rect.x += player.speed
-                
-  #       pygame.display.flip()
+  def gameloop(self):
     
-  #     #event loop
+    while True:
+        
+        current_time = pygame.time.get_ticks()
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    self.player.rect.x -= self.player.speed
+                if event.key == pygame.K_RIGHT:
+                    self.player.rect.x += self.player.speed
 
-  #     #update data
+        for enemy in self.enemies:
+            enemy.rect.y = enemy.rect.y + 10
+        
+        self.screen.fill((0,0,0))  # Fill the screen with a black color
 
-  #     #redraw
+        self.screen.blit(self.player.surface_obj, self.player.rect)
+        
+        for enemy in self.enemies:
+            self.screen.blit(enemy.surface_obj, enemy.rect) 
+        
+        for enemy in self.enemies:
+            if enemy.rect.y == 500:
+                for n in range(1):
+                    self.enemies.add(Enemy(random.randint(0,575),0))
+            if enemy.rect.y == 650:
+                enemy.kill() 
+                
+        if 10000 < current_time <= 20000 and self.number_of_times_2==[] :
+            for n in range(2):
+                self.enemies.add(Enemy(random.randint(0,575),-50))
+            self.number_of_times_2.append(1)
+        
+        if  20000 < current_time <= 30000 and self.number_of_times_3==[] :
+            for n in range(2):
+                self.enemies.add(Enemy(random.randint(0,575),-50))
+            self.number_of_times_3.append(1)
+                
+        pygame.display.flip()
+        self.clock.tick(30)  # Set the frame rate to 30 frames per second
+    
+      #event loop
+
+      #update data
+
+      #redraw
     
   # def gameoverloop(self):
   #     #event loop
