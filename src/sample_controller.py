@@ -1,5 +1,6 @@
 import pygame
 from player import Player
+from enemy import Enemy
 
 class Controller:
   
@@ -7,26 +8,34 @@ class Controller:
     #setup pygame data
     pygame.init()
     screen = pygame.display.set_mode((600,600))
+    player = Player()
+    enemy = Enemy()
+    clock = pygame.time.Clock()
+    enemies = pygame.sprite.Group()
+    number_of_times_2 = []
+    number_of_times_3 = []
+    current_time =0
     
   def mainloop(self):
-    while True:
-      if self.STATE == "MENU":
-        self.menuloop()
-      elif self.STATE == "GAME":
-        self.gameloop()
-      elif self.STATE == "GAMEOVER":
-        self.gameoverloop()
+    # while True:
+    #   if self.STATE == "MENU":
+    #     self.menuloop()
+    #   elif self.STATE == "GAME":
+    #     self.gameloop()
+    #   elif self.STATE == "GAMEOVER":
+    #     self.gameoverloop()
     #select state loop
     
   
   ### below are some sample loop states ###
+  
 
-  def menuloop(self):
-    while self.STATE == "MENU":
-      for event in pygame.evnt.get():
-        if event.type == pygame.KEYDOWN:
-          if event.key == pygame.K_SPACE:
-            self.STATE == "GAME"
+  # def menuloop(self):
+  #   while self.STATE == "MENU":
+  #     for event in pygame.evnt.get():
+  #       if event.type == pygame.KEYDOWN:
+  #         if event.key == pygame.K_SPACE:
+  #           self.STATE == "GAME"
     
       #event loop
 
@@ -34,30 +43,30 @@ class Controller:
 
       #redraw
       
-  def gameloop(self):
-    player = Player()
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT:
-                    player.rect.x -= player.speed
+  # def gameloop(self):
+  #   player = Player()
+  #   while True:
+  #       for event in pygame.event.get():
+  #           if event.type == pygame.QUIT:
+  #               pygame.quit()
+  #           if event.type == pygame.KEYDOWN:
+  #               if event.key == pygame.K_LEFT:
+  #                   player.rect.x -= player.speed
                 
-                if event.key == pygame.K_RIGHT:
-                    player.rect.x += player.speed
+  #               if event.key == pygame.K_RIGHT:
+  #                   player.rect.x += player.speed
                 
-        pygame.display.flip()
+  #       pygame.display.flip()
     
-      #event loop
+  #     #event loop
 
-      #update data
+  #     #update data
 
-      #redraw
+  #     #redraw
     
-  def gameoverloop(self):
-      #event loop
+  # def gameoverloop(self):
+  #     #event loop
 
-      #update data
+  #     #update data
 
-      #redraw
+  #     #redraw
