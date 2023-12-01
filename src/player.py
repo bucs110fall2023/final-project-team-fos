@@ -1,8 +1,10 @@
 import pygame
 
-class Player:
+class Player(pygame.sprite.Sprite):
     
     def __init__(self, x=275, y=500):
+        super().__init__()
+        
         self.surface_obj = pygame.Surface((50,50))
         self.surface_obj.fill("white")
         self.rect = self.surface_obj.get_rect()
