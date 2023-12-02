@@ -74,6 +74,7 @@ class Controller:
     self.key_s_pressed = False
     self.check = False
     self.shootinglaser = False
+    color_changed = False
     
     while self.STATE == "GAME":
         
@@ -128,22 +129,26 @@ class Controller:
               self.STATE = "GAMEOVER"    
         
         # Update data for abilitybox
-        if current_time == 10000:
-          
-          for abilitybox in self.abilityboxes:
+        for abilitybox in self.abilityboxes:
             
             abilitybox.rect.y = abilitybox.rect.y + 3
-            abilitybox.abilitybox_color = random.choice(["lime", "darkorchid", "gold"])
-            abilitybox.surface_obj.fill(abilitybox.abilitybox_color)
             
-            if pygame.sprite.collide_rect(self.player, abilitybox) and self.abilitybox.abilitybox_color == "lime":
+            if not color_changed:
+              abilitybox.abilitybox_color = random.choice(["lime", "darkorchid", "gold", "orange"])
+              abilitybox.surface_obj.fill(abilitybox.abilitybox_color)
+              color_changed = True
+            
+            if pygame.sprite.collide_rect(self.player, abilitybox) and abilitybox.abilitybox_color == "lime":
               self.shootinglaser = True
+              self.player.surface_obj.fill("lime")
               abilitybox.kill()
-            if pygame.sprite.collide_rect(self.player, abilitybox) and self.abilitybox.abilitybox_color == "darkorchid":
-              self.player.speed = 7
+            if pygame.sprite.collide_rect(self.player, abilitybox) and abilitybox.abilitybox_color == "darkorchid":
+              self.player.speed = 10
+              self.player.surface_obj.fill("darkorchid")
               abilitybox.kill()
-            if pygame.sprite.collide_rect(self.player, abilitybox) and self.abilitybox.abilitybox_color == "gold":
+            if pygame.sprite.collide_rect(self.player, abilitybox) and abilitybox.abilitybox_color == "gold":
               self.shield.append(1)
+              self.player.surface_obj.fill("gold")
               abilitybox.kill()
             if abilitybox.rect.y >= 650:
               abilitybox.kill()
