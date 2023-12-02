@@ -10,6 +10,7 @@ class Enemy(pygame.sprite.Sprite):
         self.rect = self.surface_obj.get_rect()
         self.rect.x = x
         self.rect.y = y
+        self.speed = 10
 
 # def main():
 #     pygame.init()

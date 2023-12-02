@@ -23,10 +23,10 @@ class Controller:
     self.starting_text = self.font.render("press SPACE to start!", True, "white")
     self.number_of_times_2 = []
     self.number_of_times_3 = []
+    self.number_of_abilitybox = []
     self.shield =[]
     for n in range(2):
       self.enemies.add(Enemy(random.randint(0,575),-50))
-    self.abilityboxes.add(Abilitybox(random.randint(0,575),-50))
     self.STATE = "MENU"
     
     
@@ -75,10 +75,13 @@ class Controller:
     self.check = False
     self.shootinglaser = False
     color_changed = False
+    time_in_the_menuloop = pygame.time.get_ticks()
+    self.speed = 10
     
     while self.STATE == "GAME":
         
-        current_time = pygame.time.get_ticks()
+        time_in_the_gameloop = pygame.time.get_ticks()
+        
         
         #event loop
         for event in pygame.event.get():
@@ -101,32 +104,60 @@ class Controller:
         
         if self.key_left_pressed:
           self.player.rect.x -= self.player.speed
+          self.player.rect.x = max(self.player.rect.x,0)
         if self.key_right_pressed:
           self.player.rect.x += self.player.speed
+          self.player.rect.x = min(self.player.rect.x,600 - 50)
         
         #update data for enemies
         for enemy in self.enemies:
-          enemy.rect.y += 10
-          if enemy.rect.y == 500:
+          enemy.rect.y += self.speed
+          if 500 < enemy.rect.y <= 512:
             for n in range(1):
               self.enemies.add(Enemy(random.randint(0,575),0))
           if enemy.rect.y >= 650:
             enemy.kill()
         
-        if 10000 < current_time <= 20000 and self.number_of_times_2==[] :
+        
+        
+        if 20000 < time_in_the_gameloop - time_in_the_menuloop <= 40000 and self.number_of_times_2==[] :
           for n in range(2):
             self.enemies.add(Enemy(random.randint(0,575),-50))
           self.number_of_times_2.append(1)
+          self.speed = 11
+          self.abilityboxes.add(Abilitybox(random.randint(0,575),-50))
         
-        if 20000 < current_time <= 30000 and self.number_of_times_3==[] :
+        if 50000 < time_in_the_gameloop - time_in_the_menuloop <= 70000 and self.number_of_times_3==[] :
           for n in range(2):
             self.enemies.add(Enemy(random.randint(0,575),-50))
           self.number_of_times_3.append(1)
-
+          self.speed = 12
+          self.abilityboxes.add(Abilitybox(random.randint(0,575),-50))
+        
         for enemy in self.enemies:
           if pygame.sprite.collide_rect(self.player, enemy) and self.shield ==[] :
               self.player.kill()
               self.STATE = "GAMEOVER"    
+        
+        for enemy in self.enemies:
+          if pygame.sprite.collide_rect(self.player, enemy) and self.shield ==[1]:
+            self.shield.remove(1)
+            enemy.kill()
+            self.player.kill()
+            self.player.surface_obj.fill("white")
+            self.player.add()
+            for n in range(1):
+              self.enemies.add(Enemy(random.randint(0,575),0))
+              
+        for enemy in self.enemies:
+          if pygame.sprite.collide_rect(self.player, enemy) and self.shield ==[1,1]:
+            self.shield.remove(1)
+            enemy.kill()
+            self.player.kill()
+            self.player.surface_obj.fill("gold")
+            self.player.add()
+            for n in range(1):
+              self.enemies.add(Enemy(random.randint(0,575),0))
         
         # Update data for abilitybox
         for abilitybox in self.abilityboxes:
@@ -134,7 +165,7 @@ class Controller:
             abilitybox.rect.y = abilitybox.rect.y + 3
             
             if not color_changed:
-              abilitybox.abilitybox_color = random.choice(["lime", "darkorchid", "gold"])
+              abilitybox.abilitybox_color = random.choice(["lime","gold"])
               abilitybox.surface_obj.fill(abilitybox.abilitybox_color)
               color_changed = True
             
@@ -152,6 +183,9 @@ class Controller:
               abilitybox.kill()
             if abilitybox.rect.y >= 650:
               abilitybox.kill()
+              
+        
+            
         
         
         # Fill the screen with a black color
