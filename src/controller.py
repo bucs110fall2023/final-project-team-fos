@@ -23,7 +23,6 @@ class Controller:
     self.starting_text = self.font.render("press SPACE to start!", True, "white")
     self.number_of_times_2 = []
     self.number_of_times_3 = []
-    self.shield =[]
     for n in range(2):
       self.enemies.add(Enemy(random.randint(0,575),-50))
     self.abilityboxes.add(Abilitybox(random.randint(0,575),-50))
@@ -106,7 +105,9 @@ class Controller:
         #update data for enemies
         for enemy in self.enemies:
           enemy.rect.y += 10
-          if enemy.rect.y == 500:
+        
+        for enemy in self.enemies:
+          if enemy.rect.y >= 500:
             for n in range(1):
               self.enemies.add(Enemy(random.randint(0,575),0))
           if enemy.rect.y >= 650:
@@ -123,46 +124,30 @@ class Controller:
           self.number_of_times_3.append(1)
 
         for enemy in self.enemies:
-          if pygame.sprite.collide_rect(self.player, enemy) and self.shield ==[] :
+          if pygame.sprite.collide_rect(self.player, enemy):
               self.player.kill()
               self.STATE = "GAMEOVER"    
         
         # Update data for abilitybox
-        if current_time == 10000:
-          
-          for abilitybox in self.abilityboxes:
-            
-            abilitybox.rect.y = abilitybox.rect.y + 3
-            abilitybox.abilitybox_color = random.choice(["lime", "darkorchid", "gold"])
-            abilitybox.surface_obj.fill(abilitybox.abilitybox_color)
-            
-            if pygame.sprite.collide_rect(self.player, abilitybox) and self.abilitybox.abilitybox_color == "lime":
-              self.shootinglaser = True
-              abilitybox.kill()
-            if pygame.sprite.collide_rect(self.player, abilitybox) and self.abilitybox.abilitybox_color == "darkorchid":
-              self.player.speed = 7
-              abilitybox.kill()
-            if pygame.sprite.collide_rect(self.player, abilitybox) and self.abilitybox.abilitybox_color == "gold":
-              self.shield.append(1)
-              abilitybox.kill()
-            if abilitybox.rect.y >= 650:
+        for abilitybox in self.abilityboxes:
+          abilitybox.rect.y += 10
+          if pygame.sprite.collide_rect(self.player, abilitybox):
+            self.shootinglaser = True
+            # for n in range(1):
+            #   self.abilityboxes.add(Abilitybox(random.randint(0,575),0))
+          if abilitybox.rect.y >= 650:
               abilitybox.kill()
         
         
         # Fill the screen with a black color
         self.screen.fill((0,0,0))  
         
-        # #Fill the screen with abilitybox
-        # for abilitybox in self.abilityboxes:
-        #   self.screen.blit(abilitybox.surface_obj,abilitybox.rect)
+        #Fill the screen with abilitybox
+        self.screen.blit(self.abilitybox.surface_obj,self.abilitybox.rect)
         
         #Fill the screen with enemies
         for enemy in self.enemies:
           self.screen.blit(enemy.surface_obj, enemy.rect) 
-          
-        #Fill the screen with abilitybox
-        for abilitybox in self.abilityboxes:
-          self.screen.blit(abilitybox.surface_obj,abilitybox.rect)
         
         #Fill the screen with player
         self.screen.blit(self.player.surface_obj, self.player.rect) 
