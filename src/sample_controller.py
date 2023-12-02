@@ -134,7 +134,7 @@ class Controller:
             abilitybox.rect.y = abilitybox.rect.y + 3
             
             if not color_changed:
-              abilitybox.abilitybox_color = random.choice(["lime", "darkorchid", "gold", "orange"])
+              abilitybox.abilitybox_color = random.choice(["lime", "darkorchid", "gold"])
               abilitybox.surface_obj.fill(abilitybox.abilitybox_color)
               color_changed = True
             
