@@ -1,13 +1,16 @@
 import pygame
+import random
 
 class Enemy(pygame.sprite.Sprite):
     
-    def __init__(self, x=275, y=0):
+    def __init__(self, x=275, y=0, width=50, height=80, image_path=random.choice(["assets/enemyship_2.jpg",])):
         super().__init__()
         
-        self.surface_obj = pygame.Surface((50,70))
-        self.surface_obj.fill("red")
-        self.rect = self.surface_obj.get_rect()
+        # self.surface_obj = pygame.Surface((50,70))
+        # self.surface_obj.fill("red")
+        original_image = pygame.image.load(image_path)
+        self.image = pygame.transform.scale(original_image, (width,height))
+        self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
         self.speed = 10

@@ -2,15 +2,17 @@ import pygame
 from src.player import Player
 
 class Laserbeam(pygame.sprite.Sprite):
-    def __init__(self, pos_x = 275, pos_y = 500, laserbeam_color = "lime"):
+    def __init__(self, width = 5, height = 40, pos_x = 275, pos_y = 500, laserbeam_color = "lime"):
         super().__init__()
         
         self.player = Player()
-        self.surface_obj = pygame.Surface((5,17))
+        self.surface_obj = pygame.Surface((width,height))
         self.surface_obj.fill(laserbeam_color)
         self.rect = self.surface_obj.get_rect()
-        self.rect.x = self.player.rect.x + 22
-        self.rect.y = self.player.rect.y
+        self.rect.x = pos_x
+        self.rect.y = pos_y
+        
+        
     
     # def 나가느게():
     #     while 
