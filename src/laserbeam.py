@@ -11,15 +11,3 @@ class Laserbeam(pygame.sprite.Sprite):
         self.rect = self.surface_obj.get_rect()
         self.rect.x = pos_x
         self.rect.y = pos_y
-        
-        
-    
-    # def 나가느게():
-    #     while 
-    #       self.laserbeam.rect.y -= 20
-    #       self.screen.blit(self.laserbeam.surface_obj, self.laserbeam.rect)
-    #       if self.laserbeam.rect.y == 0 :
-    #         self.laserbeam.kill()
-    #         self.laserbeam.rect.x = self.player.rect.x
-    #         self.laserbeam.rect.y = self.player.rect.y 
-    #         self.check == False
