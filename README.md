@@ -62,17 +62,17 @@ class Controller : Contains three loops. Menuloop, Gameloop, Gameoverloop.
      >>
 
 ## ATP
-Program: "Team FOS: Full of Stars" 
+Program: "SPACEWAR"
 
-Test Case 1: Starting Game
-Test Description: Test the navigation through the game's main menu.
+Test Case 1: Starting Game/
+Test Description: Test the navigation through the game's main menu./
 Test Steps:
 1.	Press the SPACEBAR key to Start the game.
 2.	Verify that this action is working and leads to the expected actions.
 Expected Outcome: The main menu should allow the player to start the game when SPACEBAR key is pressed.
 
-Test Case 2: Sound Condition
-Test Description: Verify that the background music and the sound effects are properly working.
+Test Case 2: Sound Condition/
+Test Description: Verify that the background music and the sound effects are properly working./
 Test Steps:
 1.	Run the program.
 2.	Verify if the background music is working.
@@ -82,8 +82,8 @@ Test Steps:
 6.  Verify if the sound effects are working when collision happens or when shooting laserbeams.
 Expected Outcome: Sound effects should work while playing.
 
-Test Case 3: Image Visibility:
-Test Description: Verify that the game has the assigned images.
+Test Case 3: Image Visibility/
+Test Description: Verify that the game has the assigned images./
 Test Steps:
 1.	Start the game.
 2.	Verify that the program has the assigned background image.
@@ -92,8 +92,8 @@ Test Steps:
 5.  Verify that the program has the assigned abilitybox image.
 Expected Outcome: The program have the correct assigned image.
 
-Test Case 4: Player Movement
-Test Description: The Player’s ship moves left/right/up/down when left/right/up/down arrow keys are pressed.
+Test Case 4: Player Movement/
+Test Description: The Player’s ship moves left/right/up/down when left/right/up/down arrow keys are pressed./
 Test Steps:
 1.	Start the game.
 2.	Press the left arrow key.
@@ -106,16 +106,16 @@ Test Steps:
 9.	Verify that the player’s spaceship moves down.
 Expected Outcome: The player’s spaceship should move left/right/up/down in response to the arrow key inputs.
 
-Test Case 5: Abilitybox Collision Detection
-Test Description: Ensure that collisions between the player and abilityboxes are detected correctly.
+Test Case 5: Abilitybox Collision Detection/
+Test Description: Ensure that collisions between the player and abilityboxes are detected correctly./
 Test Steps:
 1.	Start the game.
 2.	Survive until the abilitybox comes down.
 3.	Verify when collided with a abilitybox gets a ability.
 Expected Outcome: Player gets a ability when collided with a abilitybox.
 
-Test Case 6: Game Over Condition
-Test Description: Ensure that collisions between the player's ship and enemy ships are detected correctly.
+Test Case 6: Game Over Condition/
+Test Description: Ensure that collisions between the player's ship and enemy ships are detected correctly./
 Test Steps:
 1.	Start the game.
 2.	If the player's spaceship collides with an enemy ship.
@@ -124,8 +124,8 @@ Test Steps:
 5.	Verify that game does not end.
 Expected Outcome: If player’s spaceship avoids encountering enemy ships the game should go on.
 
-Test Case 7: Returning back to Menu from Game Over
-Test Description: Ensure that when game is over if player presses space, player goes back to the menu
+Test Case 7: Returning back to Menu from Game Over/
+Test Description: Ensure that when game is over if player presses space, player goes back to the menu/
 Test Steps:
 1.	Start the game.
 2.	Play till the playership collides with the enemy.
