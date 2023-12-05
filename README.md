@@ -93,7 +93,7 @@ Test Steps:
 Expected Outcome: The program have the correct assigned image.
 
 Test Case 4: Player Movement/
-Test Description: The Player’s ship moves left/right/up/down when left/right/up/down arrow keys are pressed./
+Test Description: The Player’s ship moves left,right,up,down when left,right,up,down arrow keys are pressed./
 Test Steps:
 1.	Start the game.
 2.	Press the left arrow key.
@@ -104,7 +104,7 @@ Test Steps:
 7.	Verify that the player’s spaceship moves up.
 8.	Press the down arrow key.
 9.	Verify that the player’s spaceship moves down.
-Expected Outcome: The player’s spaceship should move left/right/up/down in response to the arrow key inputs.
+Expected Outcome: The player’s spaceship should move left,right,up,down in response to the arrow key inputs.
 
 Test Case 5: Abilitybox Collision Detection/
 Test Description: Ensure that collisions between the player and abilityboxes are detected correctly./
