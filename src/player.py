@@ -8,6 +8,7 @@ class Player(pygame.sprite.Sprite):
         self.original_image = pygame.image.load(image_path)
         self.image = pygame.transform.scale(self.original_image, (width,height))
         self.rect = self.image.get_rect()
+        self.colliderect = pygame.rect.Rect((self.rect.x + 7 ,self.rect.y),(36,80))
         self.rect.x = x 
         self.rect.y = y
         self.speed = 5

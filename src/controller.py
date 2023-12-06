@@ -1,5 +1,6 @@
 import pygame
 import random
+import math
 from pygame import mixer
 from src.player import Player
 from src.enemy import Enemy
@@ -21,8 +22,8 @@ class Controller:
     self.laserbeams = pygame.sprite.Group()
     self.abilityboxes = pygame.sprite.Group()
     self.STATE = "MENU"
-    background_image = pygame.image.load("assets/background.jpg")
-    self.image = pygame.transform.scale(background_image, (600,700))
+    self.background_image = pygame.image.load("assets/background.jpg")
+    self.image = pygame.transform.scale(self.background_image, (600,700))
     self.rect = self.image.get_rect()
     mixer.music.load("assets/posterity.mp3")
     mixer.music.play(-1)
@@ -41,6 +42,16 @@ class Controller:
   
   def menuloop(self):
     
+    info_image = pygame.image.load("assets/info.png")
+    back_image = pygame.image.load("assets/back.png")
+    self.info_image_x = 0
+    self.info_image_y = 0
+    self.menu_info_image = pygame.transform.scale(info_image, (30,30))
+    self.menu_info_image_rect = self.menu_info_image.get_rect()
+    self.menu_back_image = pygame.transform.scale(back_image,(50,30))
+    self.menu_back_image_rect =self.menu_back_image.get_rect()
+    display_info = False
+    
     while self.STATE == "MENU":
       
       #event loop
@@ -52,16 +63,58 @@ class Controller:
             gamestart_sound = mixer.Sound("assets/gamestart_sound.wav")
             gamestart_sound.play()
             self.STATE = "GAME"
-      
+        if event.type == pygame.MOUSEBUTTONDOWN:
+          if self.menu_info_image_rect.collidepoint(event.pos):
+            gamestart_sound = mixer.Sound("assets/gamestart_sound.wav")
+            gamestart_sound.play()
+            display_info = True
+          if self.menu_back_image_rect.collidepoint(event.pos):
+            gamestart_sound = mixer.Sound("assets/gamestart_sound.wav")
+            gamestart_sound.play()
+            display_info = False
+          
       #update data
       self.screen.fill((0,0,0))
-      self.font = pygame.font.Font("assets/Inversionz.ttf", 70)
-      self.game_name = self.font.render("SPACEWAR", True, "white")
-      self.font = pygame.font.Font("assets/Inversionz.ttf", 40)
-      self.starting_text =self.font.render("press [space] to play", True, "white")
-      self.screen.blit(self.starting_text, (30,550))
-      self.screen.blit(self.game_name, (125,150))
+      if display_info:
+        self.font = pygame.font.Font("assets/Inversionz.ttf", 30)
+        self.rules_of_game_0 = self.font.render("ABOUT GAME", True, "white")
+        self.rules_of_game_1 = self.font.render("* avoid the killerships", True, "white")
+        self.rules_of_game_2 = self.font.render("* get the abilitybox", True, "white")
+        self.rules_of_game_3 = self.font.render("* the abilities are", True, "white")
+        self.rules_of_game_4 = self.font.render("shooting, speed, shield", True, "white")
+        self.rules_of_game_5 = self.font.render("* max 2 abilities", True, "white")
+        self.rules_of_game_6 = self.font.render("* if same ability second time", True, "white")
+        self.rules_of_game_7 = self.font.render("your ability will get upgraded", True, "white")
+        self.rules_of_game_8 = self.font.render("HOW TO PLAY", True, "white")
+        self.rules_of_game_9 = self.font.render("left,right,up,down keys to move", True, "white")
+        self.rules_of_game_10= self.font.render("press 's' to shoot", True, "white")
+        
+        self.screen.blit( self.rules_of_game_0, (208,50))
+        self.screen.blit( self.rules_of_game_1, (80,100))
+        self.screen.blit( self.rules_of_game_2, (110,150))
+        self.screen.blit( self.rules_of_game_3, (120,200))
+        self.screen.blit( self.rules_of_game_4, (80,250))
+        self.screen.blit( self.rules_of_game_5, (130,300))
+        self.screen.blit( self.rules_of_game_6, (20,350))
+        self.screen.blit( self.rules_of_game_7, (12,400))
+        self.screen.blit( self.rules_of_game_8, (200,500))
+        self.screen.blit( self.rules_of_game_9, (5,550))
+        self.screen.blit( self.rules_of_game_10, (130,600))
+        self.screen.blit(self.menu_back_image,(550,0))
+        
+            
+      else:    
+        self.font = pygame.font.Font("assets/Inversionz.ttf", 100)
+        self.game_name = self.font.render("SPACEWAR", True, "white")
+        self.font = pygame.font.Font("assets/Inversionz.ttf", 40)
+        self.starting_text =self.font.render("press [space] to play", True, "white")
+        
+        self.screen.blit(self.starting_text, (30,550))
+        self.screen.blit(self.game_name, (50,180))
+        self.screen.blit(self.menu_info_image,(self.info_image_x,self.info_image_y))
       
+      self.menu_info_image_rect.topleft = (self.info_image_x, self.info_image_y)
+      self.menu_back_image_rect.topleft = (550, 0)
       #redraw
       pygame.display.flip()
       
@@ -89,6 +142,8 @@ class Controller:
     self.enemy_speed = 12
     for n in range(2):
       self.enemies.add(Enemy(random.randint(0,550),-50))
+    tiles = math.ceil(700/600) + 2
+    scroll = 0
     
     while self.STATE == "GAME":
         
@@ -144,7 +199,15 @@ class Controller:
           self.player.rect.y = min(self.player.rect.y,700 - 80)
           
         #Fill the screen with background image
-        self.screen.blit(self.image, self.rect)
+        self.image = pygame.transform.scale(self.background_image, (600,600))
+        for i in range(0, tiles):
+          self.screen.blit(self.image, (0,100 + (-i)*600 + scroll))
+        
+        scroll += 1
+        
+        if abs(scroll) > 600 :
+          scroll = 0
+          
           
         #Shooting laserbeams
         if self.check and self.shoot_list == [1]: 
@@ -215,14 +278,14 @@ class Controller:
           for n in range(2):
             self.enemies.add(Enemy(random.randint(0,550),-50))
           self.number_of_times_2.append(1)
-          self.enemy_speed = 13
+          self.enemy_speed = 12
           self.abilityboxes.add(Abilitybox(random.randint(0,550),-50))
         
         if 50000 < self.time_in_the_gameloop - self.time_in_the_menuloop <= 70000 and self.number_of_times_3==[] :
           for n in range(2):
             self.enemies.add(Enemy(random.randint(0,550),-50))
           self.number_of_times_3.append(1)
-          self.enemy_speed = 13
+          self.enemy_speed = 12
           self.abilityboxes.add(Abilitybox(random.randint(0,550),-50))
           
         if 120000 < self.time_in_the_gameloop - self.time_in_the_menuloop <= 130000 and self.number_of_times_4==[] :
@@ -297,13 +360,13 @@ class Controller:
               if self.speed_list == [1]:
                 shield_sound = mixer.Sound("assets/shield_sound.wav")
                 shield_sound.play()
-                self.player.speed = 8
+                self.player.speed = 6
                 abilitybox.kill()
                 abilitybox_changed = False
               if self.speed_list == [1,1]:
                 shield_sound = mixer.Sound("assets/shield_sound.wav")
                 shield_sound.play()
-                self.player.speed = 10
+                self.player.speed = 7
                 abilitybox.kill()
                 abilitybox_changed = False
                 
@@ -330,13 +393,13 @@ class Controller:
         #Fill the screen with player
         self.screen.blit(self.player.image, self.player.rect) 
         
-        #Fill the screen with enemies
-        for enemy in self.enemies:
-          self.screen.blit(enemy.image, enemy.rect) 
-          
         #Fill the screen with abilitybox
         for abilitybox in self.abilityboxes:
           self.screen.blit(abilitybox.image,abilitybox.rect)
+        
+        #Fill the screen with enemies
+        for enemy in self.enemies:
+          self.screen.blit(enemy.image, enemy.rect)
           
         pygame.display.flip() #redraw
         self.clock.tick(30)  # Set the frame rate to 30 frames per second

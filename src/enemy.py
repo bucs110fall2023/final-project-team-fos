@@ -3,7 +3,7 @@ import random
 
 class Enemy(pygame.sprite.Sprite):
     
-    def __init__(self, x=275, y=0, width=50, height=80, image_path = "assets/enemyship_3.jpg"):
+    def __init__(self, x=275, y=0, width=30, height=90, image_path = "assets/enemyship.png"):
         super().__init__()
         
         self.original_image = pygame.image.load(image_path)
