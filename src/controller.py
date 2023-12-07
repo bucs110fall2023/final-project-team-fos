@@ -10,9 +10,14 @@ from src.abilitybox import Abilitybox
 class Controller:
   
   def __init__(self):
+    '''
+    initializes values for the whole class object
+    '''
     #setup pygame data
     pygame.init()
-    self.screen = pygame.display.set_mode((600,700))
+    self.SCREEN_WIDTH = 600
+    self.SCREEN_HEIGHT = 700
+    self.screen = pygame.display.set_mode((self.SCREEN_WIDTH,self.SCREEN_HEIGHT))
     self.clock = pygame.time.Clock()
     self.player = Player()
     self.enemy = Enemy()
@@ -23,12 +28,15 @@ class Controller:
     self.abilityboxes = pygame.sprite.Group()
     self.STATE = "MENU"
     self.background_image = pygame.image.load("assets/background.jpg")
-    self.image = pygame.transform.scale(self.background_image, (600,700))
+    self.image = pygame.transform.scale(self.background_image, (self.SCREEN_WIDTH,self.SCREEN_HEIGHT))
     self.rect = self.image.get_rect()
     mixer.music.load("assets/posterity.mp3")
     mixer.music.play(-1)
     
   def mainloop(self):
+    '''
+    controlls the whole menuloop,gameloop,gamoverloop
+    '''
   
     while True:
       
@@ -41,6 +49,9 @@ class Controller:
         self.gameoverloop()
   
   def menuloop(self):
+    '''
+    displays the menu
+    '''
     
     info_image = pygame.image.load("assets/info.png")
     back_image = pygame.image.load("assets/back.png")
@@ -119,6 +130,9 @@ class Controller:
       pygame.display.flip()
       
   def gameloop(self):
+    '''
+    displays the game screen
+    '''
     
     self.number_of_times_2 = []
     self.number_of_times_3 = []
@@ -190,22 +204,22 @@ class Controller:
           self.player.rect.x = max(self.player.rect.x,0)
         if self.key_right_pressed:
           self.player.rect.x += self.player.speed
-          self.player.rect.x = min(self.player.rect.x,600 - 50)
+          self.player.rect.x = min(self.player.rect.x,self.SCREEN_WIDTH - 50)
         if self.key_up_pressed:
           self.player.rect.y -= self.player.speed
           self.player.rect.y = max(self.player.rect.y,520 - 80)
         if self.key_down_pressed:
           self.player.rect.y += self.player.speed
-          self.player.rect.y = min(self.player.rect.y,700 - 80)
+          self.player.rect.y = min(self.player.rect.y,self.SCREEN_HEIGHT - 80)
           
         #Fill the screen with background image
-        self.image = pygame.transform.scale(self.background_image, (600,600))
+        self.image = pygame.transform.scale(self.background_image, (self.SCREEN_WIDTH,self.SCREEN_WIDTH))
         for i in range(0, tiles):
-          self.screen.blit(self.image, (0,100 + (-i)*600 + scroll))
+          self.screen.blit(self.image, (0,self.SCREEN_HEIGHT-self.SCREEN_WIDTH + (-i)*self.SCREEN_WIDTH + scroll))
         
         scroll += 1
         
-        if abs(scroll) > 600 :
+        if abs(scroll) > self.SCREEN_WIDTH :
           scroll = 0
           
           
@@ -231,7 +245,7 @@ class Controller:
               self.laserbeam.kill()
               self.check = False
               enemy.kill() 
-              self.enemies.add(Enemy(random.randint(0,550),-50))
+              self.enemies.add(Enemy(random.randint(0,self.SCREEN_WIDTH-50),-50))
           
           for laserbeam in self.laserbeams:
             laserbeam.kill()
@@ -260,7 +274,7 @@ class Controller:
               self.laserbeam.kill()
               self.check = False
               enemy.kill() 
-              self.enemies.add(Enemy(random.randint(0,550),-50))
+              self.enemies.add(Enemy(random.randint(0,self.SCREEN_WIDTH-50),-50))
           
           for laserbeam in self.laserbeams:
             laserbeam.kill()
@@ -268,29 +282,29 @@ class Controller:
         #update data for enemies
         for enemy in self.enemies:
           enemy.rect.y += self.enemy_speed
-          if 600 < enemy.rect.y <= 613:
+          if self.SCREEN_WIDTH < enemy.rect.y <= self.SCREEN_WIDTH + 13:
             for n in range(1):
-              self.enemies.add(Enemy(random.randint(0,550),0))
-          if enemy.rect.y >= 750:
+              self.enemies.add(Enemy(random.randint(0,self.SCREEN_WIDTH-50),0))
+          if enemy.rect.y >= self.SCREEN_HEIGHT + 50 :
             enemy.kill()
 
         if 20000 < self.time_in_the_gameloop - self.time_in_the_menuloop <= 40000 and self.number_of_times_2==[] :
           for n in range(2):
-            self.enemies.add(Enemy(random.randint(0,550),-50))
+            self.enemies.add(Enemy(random.randint(0,self.SCREEN_WIDTH-50),-50))
           self.number_of_times_2.append(1)
           self.enemy_speed = 12
-          self.abilityboxes.add(Abilitybox(random.randint(0,550),-50))
+          self.abilityboxes.add(Abilitybox(random.randint(0,self.SCREEN_WIDTH-50),-50))
         
         if 50000 < self.time_in_the_gameloop - self.time_in_the_menuloop <= 70000 and self.number_of_times_3==[] :
           for n in range(2):
-            self.enemies.add(Enemy(random.randint(0,550),-50))
+            self.enemies.add(Enemy(random.randint(0,self.SCREEN_WIDTH-50),-50))
           self.number_of_times_3.append(1)
           self.enemy_speed = 12
-          self.abilityboxes.add(Abilitybox(random.randint(0,550),-50))
+          self.abilityboxes.add(Abilitybox(random.randint(0,self.SCREEN_WIDTH-50),-50))
           
         if 120000 < self.time_in_the_gameloop - self.time_in_the_menuloop <= 130000 and self.number_of_times_4==[] :
           for n in range(2):
-            self.enemies.add(Enemy(random.randint(0,550),-50))
+            self.enemies.add(Enemy(random.randint(0,self.SCREEN_WIDTH-50),-50))
           self.number_of_times_4.append(1)
           self.enemy_speed = 13
         
@@ -315,7 +329,7 @@ class Controller:
             self.player.image = pygame.transform.scale( pygame.image.load("assets/starship.png"), (50,80))
             self.player.add()
             for n in range(1):
-              self.enemies.add(Enemy(random.randint(0,550),0))
+              self.enemies.add(Enemy(random.randint(0,self.SCREEN_WIDTH-50),0))
               
         for enemy in self.enemies:
           if pygame.sprite.collide_rect(self.player, enemy) and self.shield_list ==[1,1]:
@@ -327,7 +341,7 @@ class Controller:
             self.player.image = pygame.transform.scale( pygame.image.load("assets/starship_shielded.png"), (50,80))
             self.player.add()
             for n in range(1):
-              self.enemies.add(Enemy(random.randint(0,550),0))
+              self.enemies.add(Enemy(random.randint(0,self.SCREEN_WIDTH-50),0))
         
         # Update data for abilitybox
         for abilitybox in self.abilityboxes:
@@ -406,6 +420,9 @@ class Controller:
 
     
   def gameoverloop(self):
+    '''
+    displays the gameoverscreen
+    '''
     
     while self.STATE == "GAMEOVER" :
       
@@ -415,6 +432,8 @@ class Controller:
           pygame.quit()
         if event.type == pygame.KEYDOWN:
           if event.key == pygame.K_SPACE:
+            gamestart_sound = mixer.Sound("assets/gamestart_sound.wav")
+            gamestart_sound.play()
             self.STATE = "MENU"
           
           
