@@ -134,9 +134,9 @@ class Controller:
     displays the game screen
     '''
     
-    self.number_of_times_2 = []
-    self.number_of_times_3 = []
-    self.number_of_times_4 = []
+    self.adding_enemy_2 = []
+    self.adding_enemy_3 = []
+    self.adding_enemy_4 = []
     self.number_of_abilitybox = []
     self.shield_list = []
     self.speed_list = []
@@ -154,6 +154,16 @@ class Controller:
     abilitybox_changed = False
     self.time_in_the_menuloop = pygame.time.get_ticks() 
     self.enemy_speed = 12
+    first_laserbeam_width = 5
+    first_laserbeam_height = 40
+    player_width = 50
+    player_height = 80
+    laserbeam_speed = 80
+    abilitybox_speed = 3
+    enemy_width = 30
+    enemy_height = 90
+    abilitybox_width = 30
+    
     for n in range(2):
       self.enemies.add(Enemy(random.randint(0,550),-50))
     tiles = math.ceil(700/600) + 2
@@ -179,15 +189,15 @@ class Controller:
               if event.key == pygame.K_s and not self.check and self.shootinglaser == True :
                 lasershot_sound = mixer.Sound("assets/lasershot_sound.wav")
                 lasershot_sound.play()
-                self.laserbeam.rect.x = self.player.rect.x + 23
-                self.laserbeam.rect.y = self.player.rect.y + 40
+                self.laserbeam.rect.x = self.player.rect.x + player_width/2 - first_laserbeam_width//2
+                self.laserbeam.rect.y = self.player.rect.y + first_laserbeam_height
                 self.check = True
                 if self.shoot_list == [1,1]:
-                  self.laserbeam.surface_obj =pygame.Surface((20,40))
+                  self.laserbeam.surface_obj =pygame.Surface((first_laserbeam_width*4,first_laserbeam_height))
                   self.laserbeam.surface_obj.fill("lime") 
                   self.laserbeam.rect = self.laserbeam.surface_obj.get_rect()
-                  self.laserbeam.rect.x = self.player.rect.x + 15
-                  self.laserbeam.rect.y = self.player.rect.y + 40
+                  self.laserbeam.rect.x = self.player.rect.x + player_width/2 - first_laserbeam_width*2
+                  self.laserbeam.rect.y = self.player.rect.y + first_laserbeam_height
                   
                 
           if event.type == pygame.KEYUP:
@@ -206,13 +216,13 @@ class Controller:
           self.player.rect.x = max(self.player.rect.x,0)
         if self.key_right_pressed:
           self.player.rect.x += self.player.speed
-          self.player.rect.x = min(self.player.rect.x,self.SCREEN_WIDTH - 50)
+          self.player.rect.x = min(self.player.rect.x,self.SCREEN_WIDTH - player_width)
         if self.key_up_pressed:
           self.player.rect.y -= self.player.speed
-          self.player.rect.y = max(self.player.rect.y,520 - 80)
+          self.player.rect.y = max(self.player.rect.y,600 - player_height*2)
         if self.key_down_pressed:
           self.player.rect.y += self.player.speed
-          self.player.rect.y = min(self.player.rect.y,self.SCREEN_HEIGHT - 80)
+          self.player.rect.y = min(self.player.rect.y,self.SCREEN_HEIGHT - player_height)
           
         #Fill the screen with background image
         self.image = pygame.transform.scale(self.background_image, (self.SCREEN_WIDTH,self.SCREEN_WIDTH))
@@ -227,7 +237,7 @@ class Controller:
           
         #Shooting laserbeams
         if self.check and self.shoot_list == [1]: 
-          self.laserbeam.rect.y -= 80
+          self.laserbeam.rect.y -= laserbeam_speed
           self.screen.blit(self.laserbeam.surface_obj, self.laserbeam.rect)
           
           if self.laserbeam.rect.y <= 0 :
@@ -242,18 +252,18 @@ class Controller:
               self.laserbeam.kill()
               self.check = False
               enemy.kill() 
-              self.enemies.add(Enemy(random.randint(0,self.SCREEN_WIDTH-50),-50))
+              self.enemies.add(Enemy(random.randint(0,self.SCREEN_WIDTH - enemy_width), -enemy_height))
           
           for laserbeam in self.laserbeams:
             laserbeam.kill()
         
         if self.check and self.shoot_list == [1,1]: 
           
-          mask_surface = pygame.Surface((10, 40))
+          mask_surface = pygame.Surface((first_laserbeam_width*2, first_laserbeam_height))
           mask_surface.fill("black")
-          self.laserbeam.rect.y -= 80
+          self.laserbeam.rect.y -= laserbeam_speed
           self.screen.blit(self.laserbeam.surface_obj, self.laserbeam.rect)
-          self.screen.blit(mask_surface, (self.laserbeam.rect.x + 5, self.laserbeam.rect.y))
+          self.screen.blit(mask_surface, (self.laserbeam.rect.x + first_laserbeam_width, self.laserbeam.rect.y))
           
           if self.laserbeam.rect.y <= 0 :
             
@@ -267,7 +277,7 @@ class Controller:
               self.laserbeam.kill()
               self.check = False
               enemy.kill() 
-              self.enemies.add(Enemy(random.randint(0,self.SCREEN_WIDTH-50),-50))
+              self.enemies.add(Enemy(random.randint(0,self.SCREEN_WIDTH - enemy_width ), -enemy_height))
           
           for laserbeam in self.laserbeams:
             laserbeam.kill()
@@ -277,28 +287,28 @@ class Controller:
           enemy.rect.y += self.enemy_speed
           if self.SCREEN_WIDTH < enemy.rect.y <= self.SCREEN_WIDTH + 13:
             for n in range(1):
-              self.enemies.add(Enemy(random.randint(0,self.SCREEN_WIDTH-50),0))
-          if enemy.rect.y >= self.SCREEN_HEIGHT + 50 :
+              self.enemies.add(Enemy(random.randint(0,self.SCREEN_WIDTH - enemy_width), -enemy_height))
+          if enemy.rect.y >= self.SCREEN_HEIGHT + enemy_height :
             enemy.kill()
 
-        if 20000 < self.time_in_the_gameloop - self.time_in_the_menuloop <= 40000 and self.number_of_times_2==[] :
+        if 20000 < self.time_in_the_gameloop - self.time_in_the_menuloop <= 40000 and self.adding_enemy_2==[] :
           for n in range(2):
-            self.enemies.add(Enemy(random.randint(0,self.SCREEN_WIDTH-50),-50))
-          self.number_of_times_2.append(1)
+            self.enemies.add(Enemy(random.randint(0,self.SCREEN_WIDTH - enemy_width), -enemy_height))
+          self.adding_enemy_2.append(1)
           self.enemy_speed = 12
-          self.abilityboxes.add(Abilitybox(random.randint(0,self.SCREEN_WIDTH-50),-50))
+          self.abilityboxes.add(Abilitybox(random.randint(0,self.SCREEN_WIDTH - abilitybox_width),-50))
         
-        if 50000 < self.time_in_the_gameloop - self.time_in_the_menuloop <= 70000 and self.number_of_times_3==[] :
+        if 50000 < self.time_in_the_gameloop - self.time_in_the_menuloop <= 70000 and self.adding_enemy_3==[] :
           for n in range(2):
-            self.enemies.add(Enemy(random.randint(0,self.SCREEN_WIDTH-50),-50))
-          self.number_of_times_3.append(1)
+            self.enemies.add(Enemy(random.randint(0,self.SCREEN_WIDTH - enemy_width), -enemy_height))
+          self.adding_enemy_3.append(1)
           self.enemy_speed = 12
-          self.abilityboxes.add(Abilitybox(random.randint(0,self.SCREEN_WIDTH-50),-50))
+          self.abilityboxes.add(Abilitybox(random.randint(0,self.SCREEN_WIDTH - abilitybox_width),-50))
           
-        if 120000 < self.time_in_the_gameloop - self.time_in_the_menuloop <= 130000 and self.number_of_times_4==[] :
+        if 120000 < self.time_in_the_gameloop - self.time_in_the_menuloop <= 130000 and self.adding_enemy_4==[] :
           for n in range(2):
-            self.enemies.add(Enemy(random.randint(0,self.SCREEN_WIDTH-50),-50))
-          self.number_of_times_4.append(1)
+            self.enemies.add(Enemy(random.randint(0,self.SCREEN_WIDTH - enemy_width), -enemy_height))
+          self.adding_enemy_4.append(1)
           self.enemy_speed = 13
         
         for enemy in self.enemies:
@@ -327,10 +337,10 @@ class Controller:
             gameover_sound.play()
             enemy.kill()
             self.player.kill()
-            self.player.image = pygame.transform.scale( pygame.image.load("assets/starship.png"), (50,80))
+            self.player.image = pygame.transform.scale( pygame.image.load("assets/starship.png"), (player_width,player_height))
             self.player.add()
             for n in range(1):
-              self.enemies.add(Enemy(random.randint(0,self.SCREEN_WIDTH-50),0))
+              self.enemies.add(Enemy(random.randint(0,self.SCREEN_WIDTH - enemy_width),0))
               
         for enemy in self.enemies:
           if pygame.sprite.collide_rect(self.player, enemy) and self.shield_list ==[1,1]:
@@ -339,20 +349,20 @@ class Controller:
             gameover_sound.play()
             enemy.kill()
             self.player.kill()
-            self.player.image = pygame.transform.scale( pygame.image.load("assets/starship_shielded.png"), (50,80))
+            self.player.image = pygame.transform.scale( pygame.image.load("assets/starship_shielded.png"), (player_width,player_height))
             self.player.add()
             for n in range(1):
-              self.enemies.add(Enemy(random.randint(0,self.SCREEN_WIDTH-50),0))
+              self.enemies.add(Enemy(random.randint(0,self.SCREEN_WIDTH - enemy_width),0))
         
         # Update data for abilitybox
         for abilitybox in self.abilityboxes:
             
-            abilitybox.rect.y = abilitybox.rect.y + 3
+            abilitybox.rect.y = abilitybox.rect.y + abilitybox_speed
             
             if not abilitybox_changed:
-              abilitybox.image_path = random.choice([ "assets/ability_shoot.png"])
+              abilitybox.image_path = random.choice([ "assets/ability_shoot.png", "assets/ability_speed.png", "assets/ability_shield.png" ])
               original_image = pygame.image.load(abilitybox.image_path)
-              abilitybox.image = pygame.transform.scale(original_image, (30,30))
+              abilitybox.image = pygame.transform.scale(original_image, (abilitybox_width,abilitybox_width))
               abilitybox_changed = True
             
             if pygame.sprite.collide_rect(self.player, abilitybox) and abilitybox.image_path == "assets/ability_shoot.png":
@@ -391,12 +401,12 @@ class Controller:
                 shield_sound = mixer.Sound("assets/shield_sound.wav")
                 shield_sound.play()
                 shielded_image = pygame.image.load("assets/starship_shielded.png")
-                self.player.image = pygame.transform.scale(shielded_image, (50,80))
+                self.player.image = pygame.transform.scale(shielded_image, (player_width,player_height))
               if self.shield_list == [1,1]:
                 shield_sound = mixer.Sound("assets/shield_sound.wav")
                 shield_sound.play()
                 shielded_image = pygame.image.load("assets/starship_shielded_2.png")
-                self.player.image = pygame.transform.scale(shielded_image, (50,80))
+                self.player.image = pygame.transform.scale(shielded_image, (player_width,player_height))
               
               abilitybox.kill()
               
