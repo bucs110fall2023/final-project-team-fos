@@ -89,12 +89,12 @@ class Controller:
       if display_info:
         self.font = pygame.font.Font("assets/Inversionz.ttf", 30)
         self.rules_of_game_0 = self.font.render("ABOUT GAME", True, "white")
-        self.rules_of_game_1 = self.font.render("* avoid the killerships", True, "white")
-        self.rules_of_game_2 = self.font.render("* get the abilitybox", True, "white")
-        self.rules_of_game_3 = self.font.render("* the abilities are", True, "white")
+        self.rules_of_game_1 = self.font.render("# avoid the killerships", True, "white")
+        self.rules_of_game_2 = self.font.render("# get the abilitybox", True, "white")
+        self.rules_of_game_3 = self.font.render("# the abilities are", True, "white")
         self.rules_of_game_4 = self.font.render("shooting, speed, shield", True, "white")
-        self.rules_of_game_5 = self.font.render("* max 2 abilities", True, "white")
-        self.rules_of_game_6 = self.font.render("* if same ability second time", True, "white")
+        self.rules_of_game_5 = self.font.render("# max 2 abilities", True, "white")
+        self.rules_of_game_6 = self.font.render("# if 2 same abilities,", True, "white")
         self.rules_of_game_7 = self.font.render("your ability will get upgraded", True, "white")
         self.rules_of_game_8 = self.font.render("HOW TO PLAY", True, "white")
         self.rules_of_game_9 = self.font.render("left,right,up,down keys to move", True, "white")
@@ -106,7 +106,7 @@ class Controller:
         self.screen.blit( self.rules_of_game_3, (120,200))
         self.screen.blit( self.rules_of_game_4, (80,250))
         self.screen.blit( self.rules_of_game_5, (130,300))
-        self.screen.blit( self.rules_of_game_6, (20,350))
+        self.screen.blit( self.rules_of_game_6, (90,350))
         self.screen.blit( self.rules_of_game_7, (12,400))
         self.screen.blit( self.rules_of_game_8, (200,500))
         self.screen.blit( self.rules_of_game_9, (5,550))
@@ -179,14 +179,16 @@ class Controller:
               if event.key == pygame.K_s and not self.check and self.shootinglaser == True :
                 lasershot_sound = mixer.Sound("assets/lasershot_sound.wav")
                 lasershot_sound.play()
-                self.laserbeam.rect.x = self.player.rect.x + 22
+                self.laserbeam.rect.x = self.player.rect.x + 23
                 self.laserbeam.rect.y = self.player.rect.y
                 self.check = True
                 if self.shoot_list == [1,1]:
+                  self.laserbeam.surface_obj =pygame.Surface((20,40))
+                  self.laserbeam.surface_obj.fill("lime") 
+                  self.laserbeam.rect = self.laserbeam.surface_obj.get_rect()
                   self.laserbeam.rect.x = self.player.rect.x + 15
                   self.laserbeam.rect.y = self.player.rect.y
-                  self.laserbeam.surface_obj =pygame.Surface((20,40)) 
-                  self.laserbeam.surface_obj.fill("lime")
+                  
                 
           if event.type == pygame.KEYUP:
               if event.key == pygame.K_LEFT:
@@ -225,18 +227,13 @@ class Controller:
           
         #Shooting laserbeams
         if self.check and self.shoot_list == [1]: 
-          
-          new_laserbeam_1 = Laserbeam(pos_x = self.player.rect.x + 22 ,pos_y = self.player.rect.y)
-          self.laserbeams.add(new_laserbeam_1)
-          self.laserbeam.rect.y -= 50
+          self.laserbeam.rect.y -= 80
           self.screen.blit(self.laserbeam.surface_obj, self.laserbeam.rect)
           
           if self.laserbeam.rect.y <= 0 :
             
             self.laserbeam.kill()
             self.check = False
-            self.laserbeam.rect.x = self.player.rect.x + 22
-            self.laserbeam.rect.y = self.player.rect.y
           
           for enemy in self.enemies:
             if pygame.sprite.collide_rect(self.laserbeam, enemy):
@@ -252,11 +249,9 @@ class Controller:
         
         if self.check and self.shoot_list == [1,1]: 
           
-          new_laserbeam_1 = Laserbeam(pos_x = self.player.rect.x + 22 ,pos_y = self.player.rect.y)
-          self.laserbeams.add(new_laserbeam_1)
           mask_surface = pygame.Surface((10, 40))
           mask_surface.fill("black")
-          self.laserbeam.rect.y -= 50
+          self.laserbeam.rect.y -= 80
           self.screen.blit(self.laserbeam.surface_obj, self.laserbeam.rect)
           self.screen.blit(mask_surface, (self.laserbeam.rect.x + 5, self.laserbeam.rect.y))
           
@@ -264,8 +259,6 @@ class Controller:
             
             self.laserbeam.kill()
             self.check = False
-            self.laserbeam.rect.x = self.player.rect.x + 22
-            self.laserbeam.rect.y = self.player.rect.y 
           
           for enemy in self.enemies:
             if pygame.sprite.collide_rect(self.laserbeam, enemy):
@@ -349,7 +342,7 @@ class Controller:
             abilitybox.rect.y = abilitybox.rect.y + 3
             
             if not abilitybox_changed:
-              abilitybox.image_path = random.choice([ "assets/ability_shoot.png","assets/ability_speed.png","assets/ability_shield.png"])
+              abilitybox.image_path = random.choice([ "assets/ability_shoot.png", "assets/ability_speed.png", "assets/ability_shield.png" ])
               original_image = pygame.image.load(abilitybox.image_path)
               abilitybox.image = pygame.transform.scale(original_image, (30,30))
               abilitybox_changed = True
