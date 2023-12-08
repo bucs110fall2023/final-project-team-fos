@@ -180,14 +180,14 @@ class Controller:
                 lasershot_sound = mixer.Sound("assets/lasershot_sound.wav")
                 lasershot_sound.play()
                 self.laserbeam.rect.x = self.player.rect.x + 23
-                self.laserbeam.rect.y = self.player.rect.y
+                self.laserbeam.rect.y = self.player.rect.y + 40
                 self.check = True
                 if self.shoot_list == [1,1]:
                   self.laserbeam.surface_obj =pygame.Surface((20,40))
                   self.laserbeam.surface_obj.fill("lime") 
                   self.laserbeam.rect = self.laserbeam.surface_obj.get_rect()
                   self.laserbeam.rect.x = self.player.rect.x + 15
-                  self.laserbeam.rect.y = self.player.rect.y
+                  self.laserbeam.rect.y = self.player.rect.y + 40
                   
                 
           if event.type == pygame.KEYUP:
@@ -310,6 +310,14 @@ class Controller:
                 enemy.kill()
               for abilitybox in self.abilityboxes:
                 abilitybox.kill()
+              scoredata = open("etc/highestscore.txt")
+              self.highestscore = scoredata.read()
+              if (self.time_in_the_gameloop - self.time_in_the_menuloop)/1000 > int(self.highestscore):
+                updatedata = open("etc/highestscore.txt", "w")
+                updatedata.write(f"{(self.time_in_the_gameloop - self.time_in_the_menuloop)//1000+1}")
+                updatedata.close()
+                scoredata = open("etc/highestscore.txt")
+                self.highestscore = scoredata.read()
               self.STATE = "GAMEOVER"  
               
         for enemy in self.enemies:
@@ -342,7 +350,7 @@ class Controller:
             abilitybox.rect.y = abilitybox.rect.y + 3
             
             if not abilitybox_changed:
-              abilitybox.image_path = random.choice([ "assets/ability_shoot.png", "assets/ability_speed.png", "assets/ability_shield.png" ])
+              abilitybox.image_path = random.choice([ "assets/ability_shoot.png"])
               original_image = pygame.image.load(abilitybox.image_path)
               abilitybox.image = pygame.transform.scale(original_image, (30,30))
               abilitybox_changed = True
@@ -429,44 +437,54 @@ class Controller:
             gamestart_sound.play()
             self.STATE = "MENU"
           
-          
+      pygame.font.init()    
       self.font = pygame.font.Font("assets/Inversionz.ttf", 40)
       self.screen.fill((0,0,0))
+        
       
       #update data
       if (self.time_in_the_gameloop - self.time_in_the_menuloop)/1000 <= 45:
+        self.highest = f"GOAT : {self.highestscore} SEC"
+        self.goat = self.font.render(self.highest, True, "white")
         self.comment = "try better next time"
         self.end_comment = self.font.render(self.comment, True, "white")
-        self.score = f"you survived {(self.time_in_the_gameloop - self.time_in_the_menuloop)//1000+1} seconds"
+        self.score = f"your score : {(self.time_in_the_gameloop - self.time_in_the_menuloop)//1000+1} sec"
         self.end_score = self.font.render(self.score, True, "white")
         self.restart = "PRESS [SPACE] FOR MENU"
         self.end_restart = self.font.render(self.restart, True, "white")
-        self.screen.blit(self.end_score, (9,100))
-        self.screen.blit(self.end_comment, (40,250))
+        self.screen.blit(self.goat, (120, 100))
+        self.screen.blit(self.end_score, (50,250))
+        self.screen.blit(self.end_comment, (40,350))
         self.screen.blit(self.end_restart, (30,550))
         pygame.display.flip()
       
       if 45 <(self.time_in_the_gameloop - self.time_in_the_menuloop)/1000 <= 90:
+        self.highest = f"GOAT : {self.highestscore} SEC"
+        self.goat = self.font.render(self.highest, True, "white")
         self.comment = "semi pro"
         self.end_comment = self.font.render(self.comment, True, "white")
-        self.score = f"you survived {(self.time_in_the_gameloop - self.time_in_the_menuloop)//1000+1} seconds"
+        self.score = f"your score : {(self.time_in_the_gameloop - self.time_in_the_menuloop)//1000+1} sec"
         self.end_score = self.font.render(self.score, True, "white")
         self.restart = "PRESS [SPACE] FOR MENU"
         self.end_restart = self.font.render(self.restart, True, "white")
-        self.screen.blit(self.end_score, (9,100))
-        self.screen.blit(self.end_comment, (190,250))
+        self.screen.blit(self.goat, (120, 100))
+        self.screen.blit(self.end_score, (50,250))
+        self.screen.blit(self.end_comment, (190,350))
         self.screen.blit(self.end_restart, (30,550))
         pygame.display.flip()
       
       if (self.time_in_the_gameloop - self.time_in_the_menuloop)/1000 > 90:
+        self.highest = f"GOAT : {self.highestscore} SEC"
+        self.goat = self.font.render(self.highest, True, "white")
         self.comment = "pro level"
         self.end_comment = self.font.render(self.comment, True, "white")
-        self.score = f"you survived {(self.time_in_the_gameloop - self.time_in_the_menuloop)//1000+1} seconds"
+        self.score = f"your score : {(self.time_in_the_gameloop - self.time_in_the_menuloop)//1000+1} sec"
         self.end_score = self.font.render(self.score, True, "white")
         self.restart = "PRESS [SPACE] FOR MENU"
         self.end_restart = self.font.render(self.restart, True, "white")
-        self.screen.blit(self.end_score, (9,100))
-        self.screen.blit(self.end_comment, (190,250))
+        self.screen.blit(self.goat, (120, 100))
+        self.screen.blit(self.end_score, (50,250))
+        self.screen.blit(self.end_comment, (180,350))
         self.screen.blit(self.end_restart, (30,550))
         
         #redraw
