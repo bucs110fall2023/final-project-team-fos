@@ -38,20 +38,22 @@ As time goes by it gets harder and harder, though the player will get abilities 
 
 2. Sound effects & Background music
 
-3. Move with keyboard
+3. Moving background
 
-4. Destroyed when hit by killership
+4. Move with keyboard
 
-5. As time goes by, 2 ability boxes appear when needed
+5. Destroyed when hit by killership
 
-6. When colliding with the first abilitybox, player gets laser or shield or speed ability.
+6. As time goes by, 2 ability boxes appear when needed
 
-7. When colliding with the second abilitybox, player could get either the stronger version of their 
+7. When colliding with the first abilitybox, player gets laser or shield or speed ability.
+
+8. When colliding with the second abilitybox, player could get either the stronger version of their 
    first ability or get a second ability while maintaining the first ability.
 
-8. Counts how much time the player survived
+9. Counts how much time the player survived
 
-9. Quit game
+10. Quit game
 
 ### Classes
 
